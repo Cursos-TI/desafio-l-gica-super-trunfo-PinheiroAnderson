@@ -1,148 +1,170 @@
 #include <stdio.h>
-#include <string.h>
+#define BILHOES 1000000000.0f
+
+// Função auxiliar para exibir nome do atributo
+const char *nomeAtributo(int opcao)
+{
+    switch (opcao)
+    {
+    case 1:
+        return "População";
+    case 2:
+        return "Área";
+    case 3:
+        return "PIB";
+    case 4:
+        return "Pontos Turísticos";
+    case 5:
+        return "Densidade Populacional";
+    case 6:
+        return "PIB per Capita";
+    case 7:
+        return "Super Poder";
+    default:
+        return "Atributo Desconhecido";
+    }
+}
 
 int main()
 {
-    // ===== Dados da Carta 1 =====
-    char nome1[] = "Brasil";
-    int populacao1 = 214000000;
-    float area1 = 8516000.0;
-    float pib1 = 1.9; // trilhões
-    int pontos1 = 30;
-    float densidade1 = populacao1 / area1;
+    // Variáveis da Carta 1
+    char estado1, codigo1[4], nomeCidade1[50];
+    unsigned long int populacao1;
+    int pontosTuristicos1;
+    float area1, pib1, densidade1, pibPerCapita1, superPoder1;
 
-    // ===== Dados da Carta 2 =====
-    char nome2[] = "Argentina";
-    int populacao2 = 46000000;
-    float area2 = 2780000.0;
-    float pib2 = 0.5; // trilhões
-    int pontos2 = 20;
-    float densidade2 = populacao2 / area2;
+    // Variáveis da Carta 2
+    char estado2, codigo2[4], nomeCidade2[50];
+    unsigned long int populacao2;
+    int pontosTuristicos2;
+    float area2, pib2, densidade2, pibPerCapita2, superPoder2;
 
+    // Cadastro Carta 1
+    printf("\n=== Cadastro da Carta 1 ===\n");
+    printf("Estado (A-H): ");
+    scanf(" %c", &estado1);
+
+    printf("Código da carta: ");
+    scanf("%s", codigo1);
+
+    printf("Nome da cidade: ");
+    scanf(" %[^\n]", nomeCidade1);
+
+    printf("População: ");
+    scanf("%lu", &populacao1);
+
+    printf("Área (km²): ");
+    scanf("%f", &area1);
+
+    printf("PIB (em bilhões de reais): ");
+    scanf("%f", &pib1);
+
+    printf("Número de pontos turísticos: ");
+    scanf("%d", &pontosTuristicos1);
+
+    // Cálculos Carta 1
+    densidade1 = (area1 != 0) ? (float)populacao1 / area1 : 0.0f;
+    pibPerCapita1 = (populacao1 != 0) ? (pib1 * BILHOES) / populacao1 : 0.0f;
+    superPoder1 = (float)populacao1 + area1 + pib1 + pontosTuristicos1 + pibPerCapita1 + ((densidade1 != 0) ? (1.0f / densidade1) : 0.0f);
+
+    // Cadastro Carta 2
+    printf("\n=== Cadastro da Carta 2 ===\n");
+    printf("Estado (A-H): ");
+    scanf(" %c", &estado2);
+
+    printf("Código da carta: ");
+    scanf("%s", codigo2);
+
+    printf("Nome da cidade: ");
+    scanf(" %[^\n]", nomeCidade2);
+
+    printf("População: ");
+    scanf("%lu", &populacao2);
+
+    printf("Área (km²): ");
+    scanf("%f", &area2);
+
+    printf("PIB (em bilhões de reais): ");
+    scanf("%f", &pib2);
+
+    printf("Número de pontos turísticos: ");
+    scanf("%d", &pontosTuristicos2);
+
+    // Cálculos Carta 2
+    densidade2 = (area2 != 0) ? (float)populacao2 / area2 : 0.0f;
+    pibPerCapita2 = (populacao2 != 0) ? (pib2 * BILHOES) / populacao2 : 0.0f;
+    superPoder2 = (float)populacao2 + area2 + pib2 + pontosTuristicos2 + pibPerCapita2 + ((densidade2 != 0) ? (1.0f / densidade2) : 0.0f);
+
+    // Menu para escolha dos atributos
     int opcao1, opcao2;
-
-    printf("===== Super Trunfo - Comparação de Países (Nível Mestre) =====\n");
-
-    // ===== Escolha do primeiro atributo =====
-    printf("Escolha o primeiro atributo para comparação:\n");
-    printf("1 - População\n");
-    printf("2 - Área\n");
-    printf("3 - PIB\n");
-    printf("4 - Número de Pontos Turísticos\n");
-    printf("5 - Densidade Demográfica\n");
-    printf("Opção: ");
+    printf("\n=== Escolha o PRIMEIRO atributo para comparar ===\n");
+    printf("1 - População\n2 - Área\n3 - PIB\n4 - Pontos Turísticos\n5 - Densidade Populacional\n6 - PIB per Capita\n7 - Super Poder\n");
     scanf("%d", &opcao1);
 
-    // ===== Escolha do segundo atributo (menu dinâmico) =====
-    printf("\nEscolha o segundo atributo (diferente do primeiro):\n");
-    for (int i = 1; i <= 5; i++)
+    printf("\n=== Escolha o SEGUNDO atributo para comparar (diferente do primeiro) ===\n");
+    for (int i = 1; i <= 7; i++)
     {
         if (i != opcao1)
         {
-            switch (i)
-            {
-            case 1: printf("1 - População\n"); break;
-            case 2: printf("2 - Área\n"); break;
-            case 3: printf("3 - PIB\n"); break;
-            case 4: printf("4 - Número de Pontos Turísticos\n"); break;
-            case 5: printf("5 - Densidade Demográfica\n"); break;
-            }
+            printf("%d - %s\n", i, nomeAtributo(i));
         }
     }
-    printf("Opção: ");
     scanf("%d", &opcao2);
 
-    // Variáveis para armazenar as somas dos valores
-    float soma1 = 0, soma2 = 0;
+    int vitorias_carta1 = 0, vitorias_carta2 = 0;
 
-    printf("\n=== Comparando: %s vs %s ===\n", nome1, nome2);
-
-    // ===== Comparação do primeiro atributo =====
-    switch (opcao1)
+    // Função de comparação inline com switch + exibição
+    for (int i = 1; i <= 2; i++)
     {
-    case 1:
-        printf("\nPopulação:\n%s: %d\n%s: %d\n", nome1, populacao1, nome2, populacao2);
-        soma1 += populacao1;
-        soma2 += populacao2;
-        printf("Vencedor no atributo: %s\n", (populacao1 > populacao2) ? nome1 : (populacao2 > populacao1) ? nome2 : "Empate");
-        break;
-    case 2:
-        printf("\nÁrea (km²):\n%s: %.2f\n%s: %.2f\n", nome1, area1, nome2, area2);
-        soma1 += area1;
-        soma2 += area2;
-        printf("Vencedor no atributo: %s\n", (area1 > area2) ? nome1 : (area2 > area1) ? nome2 : "Empate");
-        break;
-    case 3:
-        printf("\nPIB (trilhões):\n%s: %.2f\n%s: %.2f\n", nome1, pib1, nome2, pib2);
-        soma1 += pib1;
-        soma2 += pib2;
-        printf("Vencedor no atributo: %s\n", (pib1 > pib2) ? nome1 : (pib2 > pib1) ? nome2 : "Empate");
-        break;
-    case 4:
-        printf("\nPontos Turísticos:\n%s: %d\n%s: %d\n", nome1, pontos1, nome2, pontos2);
-        soma1 += pontos1;
-        soma2 += pontos2;
-        printf("Vencedor no atributo: %s\n", (pontos1 > pontos2) ? nome1 : (pontos2 > pontos1) ? nome2 : "Empate");
-        break;
-    case 5:
-        printf("\nDensidade Demográfica (hab/km²):\n%s: %.2f\n%s: %.2f\n", nome1, densidade1, nome2, densidade2);
-        soma1 += densidade1;
-        soma2 += densidade2;
-        printf("Vencedor no atributo: %s\n", (densidade1 < densidade2) ? nome1 : (densidade2 < densidade1) ? nome2 : "Empate");
-        break;
-    default:
-        printf("Opção inválida!\n");
-        return 0;
+        int atributo = (i == 1) ? opcao1 : opcao2;
+        printf("\n--- Comparando: %s ---\n", nomeAtributo(atributo));
+        switch (atributo)
+        {
+        case 1:
+            printf("%s: %lu vs %lu\n", nomeAtributo(atributo), populacao1, populacao2);
+            (populacao1 > populacao2) ? (printf("Vencedor: %s\n", nomeCidade1), vitorias_carta1++) : (populacao2 > populacao1) ? (printf("Vencedor: %s\n", nomeCidade2), vitorias_carta2++)
+                                                                                                                               : printf("Empate!\n");
+            break;
+        case 2:
+            printf("%s: %.2f km² vs %.2f km²\n", nomeAtributo(atributo), area1, area2);
+            (area1 > area2) ? (printf("Vencedor: %s\n", nomeCidade1), vitorias_carta1++) : (area2 > area1) ? (printf("Vencedor: %s\n", nomeCidade2), vitorias_carta2++)
+                                                                                                           : printf("Empate!\n");
+            break;
+        case 3:
+            printf("%s: %.2f bi vs %.2f bi\n", nomeAtributo(atributo), pib1, pib2);
+            (pib1 > pib2) ? (printf("Vencedor: %s\n", nomeCidade1), vitorias_carta1++) : (pib2 > pib1) ? (printf("Vencedor: %s\n", nomeCidade2), vitorias_carta2++)
+                                                                                                       : printf("Empate!\n");
+            break;
+        case 4:
+            printf("%s: %d vs %d\n", nomeAtributo(atributo), pontosTuristicos1, pontosTuristicos2);
+            (pontosTuristicos1 > pontosTuristicos2) ? (printf("Vencedor: %s\n", nomeCidade1), vitorias_carta1++) : (pontosTuristicos2 > pontosTuristicos1) ? (printf("Vencedor: %s\n", nomeCidade2), vitorias_carta2++)
+                                                                                                                                                           : printf("Empate!\n");
+            break;
+        case 5:
+            printf("%s: %.2f hab/km² vs %.2f hab/km²\n", nomeAtributo(atributo), densidade1, densidade2);
+            (densidade1 < densidade2) ? (printf("Vencedor: %s\n", nomeCidade1), vitorias_carta1++) : (densidade2 < densidade1) ? (printf("Vencedor: %s\n", nomeCidade2), vitorias_carta2++)
+                                                                                                                               : printf("Empate!\n");
+            break;
+        case 6:
+            printf("%s: %.2f vs %.2f\n", nomeAtributo(atributo), pibPerCapita1, pibPerCapita2);
+            (pibPerCapita1 > pibPerCapita2) ? (printf("Vencedor: %s\n", nomeCidade1), vitorias_carta1++) : (pibPerCapita2 > pibPerCapita1) ? (printf("Vencedor: %s\n", nomeCidade2), vitorias_carta2++)
+                                                                                                                                           : printf("Empate!\n");
+            break;
+        case 7:
+            printf("%s: %.2f vs %.2f\n", nomeAtributo(atributo), superPoder1, superPoder2);
+            (superPoder1 > superPoder2) ? (printf("Vencedor: %s\n", nomeCidade1), vitorias_carta1++) : (superPoder2 > superPoder1) ? (printf("Vencedor: %s\n", nomeCidade2), vitorias_carta2++)
+                                                                                                                                   : printf("Empate!\n");
+            break;
+        }
     }
 
-    // ===== Comparação do segundo atributo =====
-    switch (opcao2)
-    {
-    case 1:
-        printf("\nPopulação:\n%s: %d\n%s: %d\n", nome1, populacao1, nome2, populacao2);
-        soma1 += populacao1;
-        soma2 += populacao2;
-        printf("Vencedor no atributo: %s\n", (populacao1 > populacao2) ? nome1 : (populacao2 > populacao1) ? nome2 : "Empate");
-        break;
-    case 2:
-        printf("\nÁrea (km²):\n%s: %.2f\n%s: %.2f\n", nome1, area1, nome2, area2);
-        soma1 += area1;
-        soma2 += area2;
-        printf("Vencedor no atributo: %s\n", (area1 > area2) ? nome1 : (area2 > area1) ? nome2 : "Empate");
-        break;
-    case 3:
-        printf("\nPIB (trilhões):\n%s: %.2f\n%s: %.2f\n", nome1, pib1, nome2, pib2);
-        soma1 += pib1;
-        soma2 += pib2;
-        printf("Vencedor no atributo: %s\n", (pib1 > pib2) ? nome1 : (pib2 > pib1) ? nome2 : "Empate");
-        break;
-    case 4:
-        printf("\nPontos Turísticos:\n%s: %d\n%s: %d\n", nome1, pontos1, nome2, pontos2);
-        soma1 += pontos1;
-        soma2 += pontos2;
-        printf("Vencedor no atributo: %s\n", (pontos1 > pontos2) ? nome1 : (pontos2 > pontos1) ? nome2 : "Empate");
-        break;
-    case 5:
-        printf("\nDensidade Demográfica (hab/km²):\n%s: %.2f\n%s: %.2f\n", nome1, densidade1, nome2, densidade2);
-        soma1 += densidade1;
-        soma2 += densidade2;
-        printf("Vencedor no atributo: %s\n", (densidade1 < densidade2) ? nome1 : (densidade2 < densidade1) ? nome2 : "Empate");
-        break;
-    default:
-        printf("Opção inválida!\n");
-        return 0;
-    }
-
-    // ===== Resultado final =====
-    printf("\n=== Resultado Final ===\n");
-    printf("Soma dos atributos:\n%s: %.2f\n%s: %.2f\n", nome1, soma1, nome2, soma2);
-
-    if (soma1 > soma2)
-        printf("Vencedor final: %s!\n", nome1);
-    else if (soma2 > soma1)
-        printf("Vencedor final: %s!\n", nome2);
+    // Resultado final
+    if (vitorias_carta1 == 2)
+        printf("\n🏆 Vencedor final: %s!\n", nomeCidade1);
+    else if (vitorias_carta2 == 2)
+        printf("\n🏆 Vencedor final: %s!\n", nomeCidade2);
     else
-        printf("Empate!\n");
+        printf("\n⚖️ Empate na rodada!\n");
 
     return 0;
 }
